@@ -13,8 +13,7 @@ class TelloGestureController:
         self.left_right_velocity = 0
         self.yaw_velocity = 0
 
-    def gesture_control(self, gesture_buffer):
-        cnt= gesture_buffer.get_gesture()
+    def gesture_control(self, cnt):
         print("GESTURE", cnt)
 
         if not self._is_landing:

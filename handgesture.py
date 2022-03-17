@@ -2,7 +2,7 @@ import cv2
 from djitellopy import tello
 import mediapipe as mp
 import time
-
+from hands import TelloGestureController
 
 # 电脑摄像头
 # cap = cv2.VideoCapture(1)
@@ -55,6 +55,7 @@ while True:
             print(i,xPos ,yPos )
 
         fingers = []
+        gesture_controller = TelloGestureController(tello)
         for tid in tip_ids:
             # 找到每个指尖的位置
             x, y = lmslist[tid][1], lmslist[tid][2]
@@ -74,10 +75,12 @@ while True:
         # fingers是这样一个列表，5个数据，0代表一个手指关闭，1代表一个手指打开
         # 判断有几个手指打开
         cnt = fingers.count(1)
+
         cTime = time.time()
         fps = 1/(cTime-pTime)
         pTime = cTime
         cv2.putText(img,f"FPS :{int(fps)}",(30, 50),cv2.FONT_HERSHEY_SIMPLEX, 1,(255,0,0),3)
+        gesture_controller.gesture_control(cnt)
 
     cv2.imshow("Image", img)
     cv2.waitKey(1)
